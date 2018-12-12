@@ -75,8 +75,8 @@ public class Prop {
         FRENO_ANTERIORE_MIN("65000"),
         FRENO_ANTERIORE_MAX("0"),
         //Client-Server SECTION
-        SERVER("1"), // 0 i'm a client!
-        PORT("56565"), //Socket port
+        SERVER_OR_CLIENT("1"), // 0 i'm a client!
+        SERVER_PORT("56565"), //Socket port
         MACADDRESS("*"),    //MAC-ADDRESS  for handshake
         //Admin SECTION
         PASSWORD("mototrainer");

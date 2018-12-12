@@ -21,14 +21,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import static org.ma.motofx.SceneManager.SCENA;
 import org.ma.motofx.data.ArduinoData;
 import org.ma.motofx.data.Prop;
 import org.ma.motofx.support.Utility;
@@ -45,8 +43,6 @@ public class FXMLSetupController implements Initializable {
     private ListView<Label> listCircuit;
     @FXML
     private ListView<Label> listViewDifficult;
-    @FXML
-    private Spinner<Integer> spinnerLaps;
     @FXML
     private ListView<Label> labelViewGearBoxType;
 
@@ -104,6 +100,8 @@ public class FXMLSetupController implements Initializable {
     private TableColumn<CRank, Integer> tabColScore;
     @FXML
     private TableColumn<CRank, String> tabColBike;
+    @FXML
+    private Slider sliderLaps;
 
     public TextField getTextfieldBike() {
         return textfieldBike;
@@ -113,9 +111,10 @@ public class FXMLSetupController implements Initializable {
         return textfieldPilota;
     }
 
-    public Spinner<Integer> getSpinnerLaps() {
-        return spinnerLaps;
+    public Slider getSliderLaps() {
+        return sliderLaps;
     }
+    
 
     private final static ObservableList<CRank> TABRANKS = FXCollections.observableArrayList(
 //            new CRank(5, "Mario Andretti", "INTERMEDIATE", "100", "100", "100", "100", "100", 100, "Ducati 500 mk")
@@ -164,11 +163,11 @@ public class FXMLSetupController implements Initializable {
         tabColScore.setCellValueFactory(cellData -> cellData.getValue().colScoreProperty().asObject());
         tabColThrottle.setCellValueFactory(cellData -> cellData.getValue().colThrottleProperty());
 
-        SpinnerValueFactory<Integer> valueFactory
-                = //
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
-
-        spinnerLaps.setValueFactory(valueFactory);
+//        SpinnerValueFactory<Integer> valueFactory
+//                = //
+//                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
+//
+//        spinnerLaps.setValueFactory(valueFactory);
 
         /**
          * Con questa inizializzazione la Label visualizza e ridimensiona la
@@ -205,10 +204,12 @@ public class FXMLSetupController implements Initializable {
     }
 
     private void vaiAScena(ActionEvent event) {
-        FXMLVideoController fxml = (FXMLVideoController) SCENA.get(SceneManager.LeScene.VIDEO).getController();
+        FXMLVideoController fxml = (FXMLVideoController) 
+                MainApp.stageManager.getController(EStage.VIDEO);
+//                SCENA.get(SceneManager.LeScene.VIDEO).getController();
         fxml.changeVideo();
         fxml.playTheVideo();
-        SCENA.get(SceneManager.LeScene.VIDEO).esponiLaScena();
+        MainApp.stageManager.showStage(EStage.VIDEO);
     }
 
     @FXML
@@ -222,7 +223,7 @@ public class FXMLSetupController implements Initializable {
                 new FileChooser.ExtensionFilter("MP4", "*.mp4", "*.MP4"),
                 new FileChooser.ExtensionFilter("All files", "*.*")
         );
-        File f = fileChooser.showOpenDialog(MainApp.getStage());
+        File f = fileChooser.showOpenDialog(StageManager.getStageAttuale());
         if (f == null) {
             return;
         }
@@ -282,7 +283,7 @@ public class FXMLSetupController implements Initializable {
         int i = listCircuit.getSelectionModel().getSelectedIndex();
         if (i < 0) {
             Alert alert = new Alert(AlertType.ERROR);
-            alert.initOwner(MainApp.getStage());
+            alert.initOwner(StageManager.getStageAttuale());
             alert.setTitle("Information Dialog");
             alert.setHeaderText("Please, select a circuit");
 //        alert.setContentText("");
@@ -294,10 +295,11 @@ public class FXMLSetupController implements Initializable {
             alert.showAndWait();
             return;
         }
-        FXMLVideoController fxml = (FXMLVideoController) SCENA.get(SceneManager.LeScene.VIDEO).getController();
+        FXMLVideoController fxml = (FXMLVideoController) 
+                MainApp.stageManager.getController(EStage.VIDEO);
         fxml.changeVideo();
         fxml.playTheVideo();
-        SCENA.get(SceneManager.LeScene.VIDEO).esponiLaScena();
+        MainApp.stageManager.showStage(EStage.VIDEO);
     }
 
     @FXML
@@ -322,7 +324,6 @@ public class FXMLSetupController implements Initializable {
 
     @FXML
     private void onButtonAdmin(ActionEvent event) {
-//        SCENA.get(SceneManager.LeScene.ADMIN).esponiLaScena();
-        SCENA.get(SceneManager.LeScene.ADMIN).openAsDialog();
+        MainApp.stageManager.showStage(EStage.ADMIN);
     }
 }

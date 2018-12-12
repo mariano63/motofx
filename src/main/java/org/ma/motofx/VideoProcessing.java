@@ -10,7 +10,6 @@ import javafx.beans.Observable;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
-import static org.ma.motofx.SceneManager.SCENA;
 import org.ma.motofx.data.ArduinoData;
 import org.ma.motofx.support.AsyncTask;
 
@@ -30,10 +29,11 @@ public class VideoProcessing {
 //        Utility.msgDebug("is VideoProcessing class running on FXThread?"+isFxApplicationThread());
 //Yes it is, so i called directly(be care about time consuming tasks)
         this.mp = mp;
-        MediaView mediaView1 = mediaView;
         this.fxmlVideo = fxml;
-        FXMLSetupController fxmlData = (FXMLSetupController) SCENA.get(SceneManager.LeScene.SETUP).getController();
-        String formatted = "Lap %d of "+fxmlData.getSpinnerLaps().getValue();
+        //crea un BIND coi LAPS
+        FXMLSetupController fxmlData = (FXMLSetupController) 
+                MainApp.stageManager.getController(EStage.SETUP);
+        String formatted = "Lap %d of "+(int)fxmlData.getSliderLaps().getValue();
         fxml.getLabelLap().textProperty().bind(
                 mp.cycleCountProperty().asString(formatted));
                 
@@ -53,8 +53,8 @@ public class VideoProcessing {
             }
         });
         mp.setOnPlaying(new Runnable() {
+            @Override
             public void run() {
-                
                 System.out.println("count:"+mp.getCurrentCount()+"-"+
                         "Rate:"+mp.getCurrentRate()+"-"+
                         ""+mp.getCycleCount());
@@ -63,6 +63,9 @@ public class VideoProcessing {
         
         
         //Inizializzazioni start 
+        //Numero di laps
+        mp.cycleCountProperty().set((int)fxmlData.getSliderLaps().getValue());
+        //1st lap
         mp.setCycleCount(1);
 
     }
@@ -77,13 +80,14 @@ public class VideoProcessing {
         elapsedTime thd1 = new elapsedTime(fxmlVideo);
         thd1.execute();
         
-        //tst breaks progressing bar
-        int fa = ArduinoData.frenoAnteriorePercent.get();
-        if(fa>100) fa=0;
-        ArduinoData.frenoAnteriorePercent.set(++fa);
-        int fp = ArduinoData.frenoPosteriorePercent.get();
-        if(fp>100) fp=0;
-        ArduinoData.frenoPosteriorePercent.set(++fp);
+//        {   //tst breaks progressing bar. Remove when done
+//            int fa = ArduinoData.frenoAnteriorePercent.get();
+//            if(fa>100) fa=0;
+//            ArduinoData.frenoAnteriorePercent.set(++fa);
+//            int fp = ArduinoData.frenoPosteriorePercent.get();
+//            if(fp>100) fp=0;
+//            ArduinoData.frenoPosteriorePercent.set(++fp);
+//        }
         
     }
 

@@ -22,13 +22,11 @@ import org.ma.motofx.graph.ScaleThumbs;
 import org.ma.motofx.support.AsyncTask;
 import org.ma.motofx.support.Utility;
 
-import java.awt.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 import static java.lang.Thread.*;
-import static org.ma.motofx.SceneManager.SCENA;
 
 /**
  * FXML Controller class
@@ -88,13 +86,15 @@ public class FXMLVideoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Utility.msgDebug("Initialize video controller!!!");
-        FXMLSetupController fxml = (FXMLSetupController) SCENA.get(SceneManager.LeScene.SETUP).getController();
+        FXMLSetupController fxml = (FXMLSetupController)
+                MainApp.stageManager.getController(EStage.SETUP);
         labelBike.textProperty().bind(fxml.getTextfieldBike().textProperty());
         labelPilota.textProperty().bind(fxml.getTextfieldPilota().textProperty());
         progressBarFrontBreak.progressProperty().bind(ArduinoData.frenoAnteriorePercent.divide(100d));
         progressBarRearBreak.progressProperty().bind(ArduinoData.frenoPosteriorePercent.divide(100d));
 
-        Scene scenaSetup = SCENA.get(SceneManager.LeScene.SETUP).getScene();
+        Scene scenaSetup = MainApp.stageManager.getScene(EStage.SETUP);
+//                SCENA.get(SceneManager.LeScene.SETUP).getScene();
         ScaleThumbs scaleThumbs =
                 new ScaleThumbs(scenaSetup, groupThumbs);
     }
@@ -149,11 +149,10 @@ public class FXMLVideoController implements Initializable {
 
         @Override
         protected void progressCallback(Object... params) {
-
             textPreCount.setText(params[0]+"");
             if (params[0] instanceof Integer) {
                 if ((Integer)params[0] == -1) {
-                    if(SceneManager.getScenaAttuale().leScene.equals(SceneManager.LeScene.VIDEO))
+                    if(StageManager.getEStageAttuale().equals(EStage.VIDEO))
                         mediaPlayer.play();
                 }
             }
@@ -189,12 +188,13 @@ public class FXMLVideoController implements Initializable {
         PaneVideo.getChildren().setAll(mediaView);
         VideoProcessing videoProcessing = new VideoProcessing(mediaPlayer
                 , mediaView
-                , (FXMLVideoController) SCENA.get(SceneManager.LeScene.VIDEO).getController());
+                , (FXMLVideoController) MainApp.stageManager.getController(EStage.VIDEO)
+        );
     }
 
     @FXML
     private void ButBackFromVideoOnAction(ActionEvent event) {
-        SCENA.get(SceneManager.LeScene.SETUP).esponiLaScena();
+        MainApp.stageManager.showStage(EStage.SETUP);
     }
 
 //    private void playaa(ActionEvent event) {

@@ -25,33 +25,25 @@
         </action>
         <action>
             <actionName>CUSTOM-NewFXMain</actionName>
-            <displayName>NewFXMain</displayName>
+            <displayName>MainApp</displayName>
             <goals>
                 <goal>exec:java</goal>
             </goals>
             <properties>
-                <exec.mainClass>org.ma.motofx.NewFXMain</exec.mainClass>
+                <exec.mainClass>org.ma.motofx.MainApp</exec.mainClass>
             </properties>
         </action>
         <action>
-            <actionName>CUSTOM-Utility</actionName>
-            <displayName>Utility</displayName>
+            <actionName>CUSTOM-Server.main</actionName>
+            <displayName>Server.main</displayName>
             <goals>
                 <goal>exec:java</goal>
             </goals>
             <properties>
-                <exec.mainClass>"org.ma.motofx.support.Utility"</exec.mainClass>
+                <exec.mainClass>org.ma.motofx.socks.Server</exec.mainClass>
             </properties>
         </action>
-        <action>
-            <actionName>CUSTOM-Prop</actionName>
-            <displayName>Prop</displayName>
-            <goals>
-                <goal>exec:java</goal>
-            </goals>
-            <properties>
-                <exec.mainClass>org.ma.motofx.data.Prop</exec.mainClass>
-            </properties>
-        </action>
+        
+        
                 
     </actions>

@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import static org.ma.motofx.SceneManager.SCENA;
 
 public class FXMLSceneController implements Initializable {
     
@@ -19,7 +18,8 @@ public class FXMLSceneController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me! I change Scene");
-        SCENA.get(SceneManager.LeScene.VIDEO).esponiLaScena();
+        MainApp.stageManager.showStage(EStage.VIDEO);
+//        SCENA.get(SceneManager.LeScene.VIDEO).esponiLaScena();
     }
     
     @Override

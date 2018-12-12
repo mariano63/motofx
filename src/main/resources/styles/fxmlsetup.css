@@ -35,6 +35,32 @@
     -fx-my-button-color_release: aquamarine ;
     -fx-my-labeldigit-color: aquamarine ;
 }
+.slider .axis{
+  -fx-tick-label-font-size: 1.5em;
+}
+.text-slider .maintitle {
+	font-size: 57px;
+}
+.text-slider .subtitle {
+	font-size: 30px;
+}
+.slider .thumb {
+    /*-fx-background-image :url("your image");*/ 
+    -fx-padding: 12;
+/*    -fx-pref-height: 20;
+    -fx-pref-width: 20;*/
+}
+.slider .track {
+    -fx-control-inner-background: darkgrey ;
+     /*-fx-background-color: linear-gradient(grey,gray);*/
+    -fx-pref-height:16; 
+}
+
+/*.slider:horizontal .track {
+    -fx-pref-width:20;
+}*/
+
+
 .labeldigit {
     -fx-text-fill: -fx-my-labeldigit-color;
 }
@@ -253,3 +279,4 @@
 .table-view{
    -fx-background-color: transparent;
 }
+

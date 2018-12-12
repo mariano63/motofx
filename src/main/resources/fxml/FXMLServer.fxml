@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="528.0" prefWidth="834.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ma.motofx.FXMLServerController">
+    <stylesheets>
+        <URL value="@/styles/fxmlserver.css" />
+    </stylesheets>
+   <children>
+      <ToggleButton fx:id="butStartServer" layoutX="32.0" layoutY="46.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="134.0" text="Start Server" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="46.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </ToggleButton>
+      <TableView fx:id="tableClients" layoutX="32.0" layoutY="161.0" prefHeight="360.0" prefWidth="698.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="161.0">
+        <columns>
+          <TableColumn editable="false" prefWidth="199.0" sortable="false" text="Client ID">
+               <columns>
+                <TableColumn fx:id="colIp" prefWidth="75.0" text="IP" />
+                  <TableColumn fx:id="colMac" prefWidth="75.0" text="MAC" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="colName" editable="false" prefWidth="128.0" text="Name" />
+            <TableColumn fx:id="colBike" editable="false" prefWidth="154.0" text="Bike" />
+            <TableColumn editable="false" prefWidth="162.0" sortable="false" text="Activity" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

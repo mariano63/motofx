@@ -24,7 +24,6 @@ import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import static org.ma.motofx.SceneManager.SCENA;
 import org.ma.motofx.data.Prop;
 import org.ma.motofx.support.Utility;
 import org.ma.motofx.tables.Tolerances;
@@ -124,8 +123,10 @@ public class FXMLAdminController implements Initializable {
     }
     @FXML
     private void onButtonClose(ActionEvent event) {
-        buttonClose.getScene().getWindow().hide();
-//        MainApp.SCENA.get(SceneManager.LeScene.SETUP).esponiLaScena();
+//        buttonClose.getScene().getWindow().hide();
+//        ((Stage) buttonClose.getScene().getWindow()).close();
+        MainApp.stageManager.showStage(EStage.SETUP);
+//        SCENA.get(SceneManager.LeScene.SETUP).esponiLaScena();
     }
     
     @FXML
@@ -190,7 +191,7 @@ public class FXMLAdminController implements Initializable {
                 new FileChooser.ExtensionFilter("Background", "*.png", "*.jpg"),
                 new FileChooser.ExtensionFilter("All files", "*.*")
         );
-        File f = fileChooser.showOpenDialog(MainApp.getStage());
+        File f = fileChooser.showOpenDialog(StageManager.getStageAttuale());
         if (f == null) {
             return;
         }
@@ -200,7 +201,7 @@ public class FXMLAdminController implements Initializable {
             Path pathDestImg = Prop.IMGBACKGROUND;
             Files.copy(pathSrcImg, pathDestImg, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
 //            SceneManager.getActualScene().getStylesheets().add("appCssFile.css");
-            SCENA.get(SceneManager.LeScene.SETUP).setStyleSheetFromJar();
+//            SCENA.get(SceneManager.LeScene.SETUP).setStyleSheetFromJar();
             
         } catch (IOException ex) {
             Logger.getLogger(FXMLAdminController.class.getName()).log(Level.SEVERE, null, ex);
