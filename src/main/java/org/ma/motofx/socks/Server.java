@@ -80,7 +80,7 @@ public class Server {
     }
 
     public boolean isTerminated() {
-        return executorServer.isTerminated() | executorServer.isShutdown();
+        return !(executorServer.isTerminated() | executorServer.isShutdown());
     }
 
     public Server() {
@@ -89,7 +89,7 @@ public class Server {
 
     public static void main(String[] args) {
         Server s = new Server().begin();
-        while (!s.isTerminated()) {
+        while (s.isTerminated()) {
             try {
                 Thread.sleep(15000);
 //            Server.getInstance().end();
@@ -100,7 +100,7 @@ public class Server {
     }
 }
 class sockClient implements Runnable{
-    Socket socket;
+    private final Socket socket;
     sockClient(Socket socket){
         this.socket = socket;
     }
@@ -123,7 +123,7 @@ class sockClient implements Runnable{
     
     public static void main(String[] args) {
         Server s = new Server().begin();
-        while ( !s.isTerminated() ) {
+        while (s.isTerminated()) {
             try {
                 Thread.sleep(15000);
 //            Server.getInstance().end();

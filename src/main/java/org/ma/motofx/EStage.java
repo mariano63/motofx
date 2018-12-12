@@ -12,7 +12,7 @@ public enum EStage {
     SETUP("TUNE!", "/fxml/FXMLSetup.fxml", "/styles/fxmlsetup.css", -1, -1, -1, -1, StageStyle.UNDECORATED),
     VIDEO("RUN!", "/fxml/FXMLVideo.fxml", "/styles/fxmlvideo.css", -1, -1, -1, -1, StageStyle.UNDECORATED),
     ADMIN("Administration", "/fxml/FXMLAdmin.fxml", "/styles/fxmladmin.css", 100, 100, 800, 600, StageStyle.DECORATED),
-    SERVER("Server", "/fxml/FXMLServer.fxml", "/styles/fxmlserver.css", 0, 0, -1, -1, StageStyle.DECORATED);
+    SERVER("Server", "/fxml/FXMLServer.fxml", "/styles/fxmlserver.css", 100, 100, 800, 600, StageStyle.DECORATED);
     final String title;
     final String fxml;
     final String css;
@@ -22,7 +22,7 @@ public enum EStage {
     final int height;
     final StageStyle decorated;
 
-    private EStage(String title, String fxml, String css, int x, int y, int width, int height, StageStyle decorated) {
+    EStage(String title, String fxml, String css, int x, int y, int width, int height, StageStyle decorated) {
         this.title = title;
         this.fxml = fxml;
         this.css = css;

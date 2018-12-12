@@ -96,6 +96,10 @@ public abstract class AsyncTask<T1, T2, T3> {
 		this.daemon = daemon;
 	}
 
+	public Thread getBackGroundThread() {
+		return backGroundThread;
+	}
+
 	public final boolean isInterrupted() {
 		return this.backGroundThread.isInterrupted();
 	}

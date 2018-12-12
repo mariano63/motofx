@@ -14,10 +14,11 @@ import javafx.stage.Stage;
  *
  * @author maria
  */
-public class StageManager {
+
+abstract class StageManager {
 
     private static Screen screen;
-    static final EnumMap<EStage, DataStage> STAGES = new EnumMap<>(EStage.class);
+    private static final EnumMap<EStage, DataStage> STAGES = new EnumMap<>(EStage.class);
     private static EStage stageAttuale;
 
     public StageManager(int numeroSchermo) {
@@ -46,7 +47,11 @@ public class StageManager {
             ds.stage.show();
             STAGES.put(estage, ds);
         }
+        postInit();
     }
+
+    //Qui andranno tutti i BIND e i vari cazzi relativi agli STAGE focus-hide, etc...
+    abstract void postInit();
 
     public static Stage getStageAttuale() {
         return STAGES.get(stageAttuale).stage;
@@ -57,6 +62,9 @@ public class StageManager {
 
     static Object getController(EStage es) {
         return STAGES.get(es).controller;
+    }
+    static Stage getStage(EStage es) {
+        return STAGES.get(es).stage;
     }
     static Scene getScene(EStage es){
         return STAGES.get(es).scene;
@@ -74,7 +82,7 @@ public class StageManager {
     /**
      * @param nMonitor monitor. (0=internal)
      */
-    public static void setScreen(int nMonitor) {
+    private static void setScreen(int nMonitor) {
         //Sbatto lo stage nel monitor X, se non c'è lo rimetto nel primary
         try {
             screen = Screen.getScreens().get(nMonitor);
@@ -83,7 +91,6 @@ public class StageManager {
         }
     }
 }
-
 class DataStage {
 
     Parent root;
@@ -93,13 +100,4 @@ class DataStage {
 
     public DataStage() {
     }
-
-    ;
-    public DataStage(EStage estage, Parent root, Scene scene, Stage stage, Object controller) {
-        this.root = root;
-        this.scene = scene;
-        this.stage = stage;
-        this.controller = controller;
-    }
-
 }

@@ -1,5 +1,9 @@
 package org.ma.motofx;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.media.MediaPlayer;
 import org.ma.motofx.support.Rs232;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -9,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.ma.motofx.data.Prop;
 import org.ma.motofx.support.Utility;
+
+import javax.rmi.CORBA.Util;
 
 public class MainApp extends Application {
 
@@ -21,31 +27,45 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
 
-        stageManager = new StageManager(0);
-//         SCENA.put(LeScene.VIDEO,new SceneManager(LeScene.VIDEO, stage) {
-//            @Override
-//            public void postEntrata(Object controller) {
-//                //Il controller qui è relativo alla scena dove si è
-//                //deciso di andare.Quindi di sicuro non VIDEO, che rileggeremo 
-//                //allora in modo diretto.
-//                FXMLVideoController fxml = (FXMLVideoController)SCENA.get(SceneManager.LeScene.VIDEO).getController();
-//                if(fxml.getMediaPlayer()!=null){
-//                    fxml.playTheVideo();                    
-//                }
-//            }
-//            
-//            @Override
-//            public void preUscita(Object controller) {
-//                //dovunque si finisca dalla scena video, si mette in pausa il filmato
-//                //Il controller qui è relativo alla scena VIDEO
-//                FXMLVideoController fxml = (FXMLVideoController)controller;
-//                if(fxml.getMediaPlayer()!=null){
-//                    fxml.getMediaPlayer().pause();
-//                }
-//            }
-//        });
+        stageManager = new StageManager(0) {
+            @Override
+            void postInit() {
+                /**
+                 * Platform.isFxApplicationThread() is true
+                 */
+                StageManager.getStage(EStage.VIDEO).focusedProperty().addListener(new ChangeListener<Boolean>()
+                {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown)
+                    {
+//                Utility.msgDebug(" VIDEO focus onHidden:"+onHidden+", onShown"+onShown);
+                        FXMLVideoController fxml = (FXMLVideoController)StageManager.getController(EStage.VIDEO);
+
+                        if (fxml.getMediaPlayer() != null) {
+                            if (onShown && fxml.getMediaPlayer().getStatus()!= MediaPlayer.Status.PLAYING) {
+                                fxml.playTheVideo();
+                            }
+                            else {
+                                if(fxml.getMediaPlayer().getStatus()== MediaPlayer.Status.PLAYING)
+                                    fxml.getMediaPlayer().pause();
+                            }
+                        }
+//                        Platform.runLater(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if (fxml.getMediaPlayer() != null) {
+//                                    if (onShown) fxml.playTheVideo();
+//                                    else fxml.getMediaPlayer().pause();
+//                                }
+//                            }
+//                        });
+                    }
+                });
+            }
+        };
+
         Utility.msgDebug(RS232.open()? "RS232 Opened!":"RS232 Error:Not opened!");
-        stageManager.showStage(EStage.SETUP);
+        StageManager.showStage(EStage.SETUP);
         
         stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
                 new EventHandler() {

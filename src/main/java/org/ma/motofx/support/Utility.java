@@ -172,4 +172,7 @@ public class Utility {
                     setcolPosition(positionToUnorderList++);
         }
     }
+    public static void main(String[] args){
+        String macAddress = getMacAddress();
+    }
 }

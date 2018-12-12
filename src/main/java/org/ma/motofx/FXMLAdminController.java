@@ -125,14 +125,14 @@ public class FXMLAdminController implements Initializable {
     private void onButtonClose(ActionEvent event) {
 //        buttonClose.getScene().getWindow().hide();
 //        ((Stage) buttonClose.getScene().getWindow()).close();
-        MainApp.stageManager.showStage(EStage.SETUP);
+        StageManager.showStage(EStage.SETUP);
 //        SCENA.get(SceneManager.LeScene.SETUP).esponiLaScena();
     }
     
     @FXML
     private void OnKeyReleasedTextPassword(KeyEvent event) {
         String s = textPassword.getText();
-        String sMatch = Prop.Desc.PASSWORD.getValue();
+        String sMatch = Prop.Desc.PASSWORD_ADMIN.getValue();
         if (s.equals(sMatch)) {
             //Passw match! rendi visibile la griglia 
             gridAdmin.setVisible(true);
@@ -175,7 +175,7 @@ public class FXMLAdminController implements Initializable {
     
     @FXML
     private void onActionbuttonChangePassword(ActionEvent event) {
-        Prop.Desc.PASSWORD.setValue(textNewPass.getText());
+        Prop.Desc.PASSWORD_ADMIN.setValue(textNewPass.getText());
         labelMatch.setText("New password saved!");
     }
     

@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="528.0" prefWidth="834.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ma.motofx.FXMLServerController">
+<AnchorPane id="AnchorPane" prefHeight="528.0" prefWidth="834.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ma.motofx.FXMLServerController">
     <stylesheets>
         <URL value="@/styles/fxmlserver.css" />
     </stylesheets>
@@ -21,18 +18,19 @@
             <Font size="18.0" />
          </font>
       </ToggleButton>
-      <TableView fx:id="tableClients" layoutX="32.0" layoutY="161.0" prefHeight="360.0" prefWidth="698.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="104.0" AnchorPane.topAnchor="161.0">
+      <TableView fx:id="tableClients" layoutX="32.0" layoutY="161.0" prefHeight="296.0" prefWidth="767.0" AnchorPane.bottomAnchor="71.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="32.0" AnchorPane.topAnchor="161.0">
         <columns>
-          <TableColumn editable="false" prefWidth="199.0" sortable="false" text="Client ID">
+          <TableColumn editable="false" prefWidth="81.0" sortable="false" text="Client ID">
                <columns>
-                <TableColumn fx:id="colIp" prefWidth="75.0" text="IP" />
-                  <TableColumn fx:id="colMac" prefWidth="75.0" text="MAC" />
+                <TableColumn fx:id="colIp" prefWidth="107.00001525878906" text="IP" />
+                  <TableColumn fx:id="colMac" minWidth="-1.0" prefWidth="112.00001525878906" text="MAC" />
                </columns>
             </TableColumn>
-            <TableColumn fx:id="colName" editable="false" prefWidth="128.0" text="Name" />
-            <TableColumn fx:id="colBike" editable="false" prefWidth="154.0" text="Bike" />
-            <TableColumn editable="false" prefWidth="162.0" sortable="false" text="Activity" />
+            <TableColumn fx:id="colName" editable="false" prefWidth="188.0" text="Name" />
+            <TableColumn fx:id="colBike" editable="false" prefWidth="185.0" text="Bike" />
+            <TableColumn editable="false" prefWidth="175.0" sortable="false" text="Activity" />
         </columns>
       </TableView>
+      <Button fx:id="butClose" layoutX="363.0" layoutY="482.0" mnemonicParsing="false" onAction="#onActionButClose" prefHeight="25.0" prefWidth="109.0" text="Close" AnchorPane.bottomAnchor="21.0" />
    </children>
 </AnchorPane>

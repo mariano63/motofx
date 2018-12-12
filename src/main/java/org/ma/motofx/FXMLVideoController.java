@@ -2,6 +2,8 @@ package org.ma.motofx;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,6 +66,7 @@ public class FXMLVideoController implements Initializable {
     AnchorPane panePreCount;
 
     private boolean isPreCount = true;
+    DoPreCount thd1;
 
     public Label getLabelLap() {
         return labelLap;
@@ -87,22 +90,23 @@ public class FXMLVideoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Utility.msgDebug("Initialize video controller!!!");
         FXMLSetupController fxml = (FXMLSetupController)
-                MainApp.stageManager.getController(EStage.SETUP);
+                StageManager.getController(EStage.SETUP);
         labelBike.textProperty().bind(fxml.getTextfieldBike().textProperty());
         labelPilota.textProperty().bind(fxml.getTextfieldPilota().textProperty());
         progressBarFrontBreak.progressProperty().bind(ArduinoData.frenoAnteriorePercent.divide(100d));
         progressBarRearBreak.progressProperty().bind(ArduinoData.frenoPosteriorePercent.divide(100d));
 
-        Scene scenaSetup = MainApp.stageManager.getScene(EStage.SETUP);
+        Scene scenaSetup = StageManager.getScene(EStage.SETUP);
 //                SCENA.get(SceneManager.LeScene.SETUP).getScene();
         ScaleThumbs scaleThumbs =
                 new ScaleThumbs(scenaSetup, groupThumbs);
+
     }
 
     public void playTheVideo() {
         if (mediaPlayer != null) {
             if (isPreCount) {
-                DoPreCount thd1 = new DoPreCount(this);
+                thd1 = new DoPreCount(this);
                 thd1.execute();
                 isPreCount=false;
             }
@@ -188,13 +192,14 @@ public class FXMLVideoController implements Initializable {
         PaneVideo.getChildren().setAll(mediaView);
         VideoProcessing videoProcessing = new VideoProcessing(mediaPlayer
                 , mediaView
-                , (FXMLVideoController) MainApp.stageManager.getController(EStage.VIDEO)
+                , (FXMLVideoController) StageManager.getController(EStage.VIDEO)
         );
     }
 
     @FXML
     private void ButBackFromVideoOnAction(ActionEvent event) {
-        MainApp.stageManager.showStage(EStage.SETUP);
+        thd1.getBackGroundThread().interrupt();
+        StageManager.showStage(EStage.SETUP);
     }
 
 //    private void playaa(ActionEvent event) {

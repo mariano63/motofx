@@ -205,11 +205,11 @@ public class FXMLSetupController implements Initializable {
 
     private void vaiAScena(ActionEvent event) {
         FXMLVideoController fxml = (FXMLVideoController) 
-                MainApp.stageManager.getController(EStage.VIDEO);
+                StageManager.getController(EStage.VIDEO);
 //                SCENA.get(SceneManager.LeScene.VIDEO).getController();
         fxml.changeVideo();
         fxml.playTheVideo();
-        MainApp.stageManager.showStage(EStage.VIDEO);
+        StageManager.showStage(EStage.VIDEO);
     }
 
     @FXML
@@ -296,10 +296,10 @@ public class FXMLSetupController implements Initializable {
             return;
         }
         FXMLVideoController fxml = (FXMLVideoController) 
-                MainApp.stageManager.getController(EStage.VIDEO);
+                StageManager.getController(EStage.VIDEO);
         fxml.changeVideo();
         fxml.playTheVideo();
-        MainApp.stageManager.showStage(EStage.VIDEO);
+        StageManager.showStage(EStage.VIDEO);
     }
 
     @FXML
@@ -324,6 +324,6 @@ public class FXMLSetupController implements Initializable {
 
     @FXML
     private void onButtonAdmin(ActionEvent event) {
-        MainApp.stageManager.showStage(EStage.ADMIN);
+        StageManager.showStage(EStage.ADMIN);
     }
 }

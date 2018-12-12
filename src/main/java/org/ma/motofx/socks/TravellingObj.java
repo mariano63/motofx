@@ -5,7 +5,7 @@ public class TravellingObj {
         //CLIENT Commands
         CLIENT_INIT,
         //SERVER Commands
-        SERVER_INIT;
+        SERVER_INIT
     }
 
     private Cmd cmd;

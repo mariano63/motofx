@@ -10,7 +10,6 @@ import javafx.beans.Observable;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
-import org.ma.motofx.data.ArduinoData;
 import org.ma.motofx.support.AsyncTask;
 
 /**
@@ -32,7 +31,7 @@ public class VideoProcessing {
         this.fxmlVideo = fxml;
         //crea un BIND coi LAPS
         FXMLSetupController fxmlData = (FXMLSetupController) 
-                MainApp.stageManager.getController(EStage.SETUP);
+                StageManager.getController(EStage.SETUP);
         String formatted = "Lap %d of "+(int)fxmlData.getSliderLaps().getValue();
         fxml.getLabelLap().textProperty().bind(
                 mp.cycleCountProperty().asString(formatted));

@@ -79,7 +79,7 @@ public class Prop {
         SERVER_PORT("56565"), //Socket port
         MACADDRESS("*"),    //MAC-ADDRESS  for handshake
         //Admin SECTION
-        PASSWORD("mototrainer");
+        PASSWORD_ADMIN("mototrainer");
         final String defaultValue;
 
         Desc( String value) {
