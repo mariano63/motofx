@@ -8,6 +8,6 @@
 <entry key="ACCELERATORE_MAX">0</entry>
 <entry key="FRENO_ANTERIORE_MIN">65534</entry>
 <entry key="FRENO_POSTERIORE_MAX">0</entry>
-<entry key="PASSWORD">1</entry>
 <entry key="ACCELERATORE_MIN">65534</entry>
+<entry key="PASSWORD">1</entry>
 </properties>

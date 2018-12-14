@@ -27,8 +27,9 @@ import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 import static java.lang.Thread.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.media.MediaErrorEvent;
 
 /**
@@ -129,7 +130,6 @@ public class FXMLVideoController implements Initializable {
                 isPreCount = false;
             }
             //mediaPlayer.play();
-            mediaPlayer.setCycleCount(1);
         }
     }
 
@@ -152,16 +152,16 @@ public class FXMLVideoController implements Initializable {
 //            Utility.msgDebug("isFxApplicationThread dovrebbe essere falso:" + isFxApplicationThread());
             try {
                 progressCallback("");
-                sleep(2000);
+                sleep(1000);
                 progressCallback("3");
-                sleep(2000);
+                sleep(1000);
                 progressCallback("2");
-                sleep(2000);
+                sleep(1000);
                 progressCallback("1");
-                sleep(2000);
+                sleep(1000);
                 progressCallback(-1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(FXMLVideoController.class.getName()).log(Level.SEVERE, null, ex);
             }
             return null;
         }
@@ -207,29 +207,20 @@ public class FXMLVideoController implements Initializable {
             mediaPlayer.dispose();
         }
         Media ilVideo = new Media(videoPath.toUri().toString());
-        ilVideo.setOnError(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Media error");
-                ilVideo.getError().printStackTrace(System.out);
-            }
+        ilVideo.setOnError(() -> {
+            System.out.println("Media error");
+            ilVideo.getError().printStackTrace(System.out);
         });
         mediaPlayer = new MediaPlayer(ilVideo);
-        mediaPlayer.setOnError(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("player error");
-                mediaPlayer.getError().printStackTrace(System.out);
-            }
+        mediaPlayer.setOnError(() -> {
+            System.out.println("player error");
+            mediaPlayer.getError().printStackTrace(System.out);
         });
         mediaView.setMediaPlayer(mediaPlayer);
-        mediaView.setOnError(new EventHandler<MediaErrorEvent>() {
-            @Override
-            public void handle(MediaErrorEvent arg0) {
-                // TODO Auto-generated method stub
-                System.out.println("view error");
-                arg0.getMediaError().printStackTrace(System.out);;
-            }
+        mediaView.setOnError((MediaErrorEvent arg0) -> {
+            // TODO Auto-generated method stub
+            System.out.println("view error");
+            arg0.getMediaError().printStackTrace(System.out);
         });
         setMediaViewFullSize(mediaView);
         PaneVideo.getChildren().setAll(mediaView);

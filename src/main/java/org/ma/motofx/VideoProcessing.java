@@ -7,10 +7,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 import org.ma.motofx.support.AsyncTask;
+import org.ma.motofx.support.Utility;
 
 /**
  *
@@ -20,6 +22,7 @@ public class VideoProcessing {
 
     private final MediaPlayer mp;
     private final FXMLVideoController fxmlVideo;
+    static SimpleIntegerProperty counterLoop = new SimpleIntegerProperty();
     Duration duration;
     static ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -30,12 +33,14 @@ public class VideoProcessing {
         this.mp = mp;
         this.fxmlVideo = fxml;
         //crea un BIND coi LAPS
-        FXMLSetupController fxmlData = (FXMLSetupController) 
-                StageManager.getController(EStage.SETUP);
-        String formatted = "Lap %d of "+(int)fxmlData.getSliderLaps().getValue();
+        FXMLSetupController fxmlSetup = (FXMLSetupController) (StageManager.getController(EStage.SETUP));
+        counterLoop.set(1);
+        FXMLSetupController fxmlData = (FXMLSetupController) StageManager.getController(EStage.SETUP);
+        String formatted = "Lap %d of " + (int) fxmlData.getSliderLaps().getValue();
         fxml.getLabelLap().textProperty().bind(
-                mp.cycleCountProperty().asString(formatted));
-                
+                counterLoop.asString(formatted));
+
+
         //Non mi funzia, boh...
 //        mp.cycleCountProperty().addListener(new InvalidationListener() {
 //            @Override
@@ -54,31 +59,38 @@ public class VideoProcessing {
         mp.setOnPlaying(new Runnable() {
             @Override
             public void run() {
-                System.out.println("count:"+mp.getCurrentCount()+"-"+
-                        "Rate:"+mp.getCurrentRate()+"-"+
-                        ""+mp.getCycleCount());
+                Utility.msgDebug("Start playing...:");
             }
         });
-        
-        
+        mp.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                if (counterLoop.get() != (int) fxmlSetup.getSliderLaps().getValue()) {
+                    mp.seek(Duration.ZERO);
+                    mp.play();
+                    counterLoop.set(counterLoop.get()+1);
+                }
+            }
+        });
+
         //Inizializzazioni start 
         //Numero di laps
-        mp.cycleCountProperty().set((int)fxmlData.getSliderLaps().getValue());
+        mp.cycleCountProperty().set((int) fxmlData.getSliderLaps().getValue());
         //1st lap
         mp.setCycleCount(1);
 
     }
 
     /**
-     * This method is call Approx every 100mSecs after the play of video
-     * pay attention to consuming time, and use AsyncTask.
+     * This method is call Approx every 100mSecs after the play of video pay
+     * attention to consuming time, and use AsyncTask.
      *
      */
     private void updateValues() {
 
         elapsedTime thd1 = new elapsedTime(fxmlVideo);
         thd1.execute();
-        
+
 //        {   //tst breaks progressing bar. Remove when done
 //            int fa = ArduinoData.frenoAnteriorePercent.get();
 //            if(fa>100) fa=0;
@@ -87,20 +99,20 @@ public class VideoProcessing {
 //            if(fp>100) fp=0;
 //            ArduinoData.frenoPosteriorePercent.set(++fp);
 //        }
-        
     }
 
     /**
-     * !!!non sarebbe cosi necessario usare un' Async...ma vabbè serve anche per descrizione...
-     * We don't need to use the progressCallback(Object... params)
-     * of AsyncTask (at least for now...)
-     * because updateValue is called every 100msec, and so
-     * the AsyncTask job arrive on onPostExecute(every 100 msecs.)
-     **/
+     * !!!non sarebbe cosi necessario usare un' Async...ma vabbè serve anche per
+     * descrizione... We don't need to use the progressCallback(Object...
+     * params) of AsyncTask (at least for now...) because updateValue is called
+     * every 100msec, and so the AsyncTask job arrive on onPostExecute(every 100
+     * msecs.)
+     *
+     */
     class elapsedTime extends AsyncTask {
 
         private final FXMLVideoController controller;
-        
+
         elapsedTime(FXMLVideoController controller) {
             this.controller = controller;
         }
@@ -117,9 +129,9 @@ public class VideoProcessing {
 //            Utility.msgDebug("isFxApplicationThread dovrebbe essere falso:" + isFxApplicationThread());
             Duration currentTime = mp.getCurrentTime();
             double minuti = currentTime.toMinutes() % 60;
-            double secondi =  currentTime.toSeconds() % 60;
+            double secondi = currentTime.toSeconds() % 60;
             double msecs = (currentTime.toMillis()) % 1000;
-            tempo = String.format("%02.0f:%02.0f%c%1.0f", minuti, secondi, '.', msecs/100);
+            tempo = String.format("%02.0f:%02.0f%c%1.0f", minuti, secondi, '.', msecs / 100);
             return tempo;
         }
 
