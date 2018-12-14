@@ -30,7 +30,9 @@ import static java.lang.Thread.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.media.MediaErrorEvent;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -108,18 +110,23 @@ public class FXMLVideoController implements Initializable {
         progressBarRearBreak.progressProperty().bind(ArduinoData.frenoPosteriorePercent.divide(100d));
 
         //Properties
-        StageManager.getStage(EStage.VIDEO).focusedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown) -> {
-            if (getMediaPlayer() != null) {
-                if (onShown && getMediaPlayer().getStatus() != MediaPlayer.Status.PLAYING) {
-                    playTheVideo();
-                } else {
-                    if (getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
-                        getMediaPlayer().pause();
-                    }
-                }
-            }
+//        StageManager.getStage(EStage.VIDEO).focusedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown) -> {
+//            if (getMediaPlayer() != null) {
+//                if (onShown && getMediaPlayer().getStatus() != MediaPlayer.Status.PLAYING) {
+//                    playTheVideo();
+//                } else {
+//                    if (getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
+//                        getMediaPlayer().pause();
+//                    }
+//                }
+//            }
+//        });
+        StageManager.getStage(EStage.VIDEO).setOnHidden((WindowEvent event) -> {
+            getMediaPlayer().pause();
         });
-
+        StageManager.getStage(EStage.VIDEO).setOnShown((WindowEvent event) -> {
+//            getMediaPlayer().play();
+        });
     }
 
     public void playTheVideo() {
@@ -218,7 +225,6 @@ public class FXMLVideoController implements Initializable {
         });
         mediaView.setMediaPlayer(mediaPlayer);
         mediaView.setOnError((MediaErrorEvent arg0) -> {
-            // TODO Auto-generated method stub
             System.out.println("view error");
             arg0.getMediaError().printStackTrace(System.out);
         });

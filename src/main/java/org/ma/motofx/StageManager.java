@@ -14,12 +14,11 @@ import javafx.stage.Stage;
  *
  * @author maria
  */
-
 abstract class StageManager {
 
     private static Screen screen;
     private static final EnumMap<EStage, DataStage> STAGES = new EnumMap<>(EStage.class);
-    private static EStage stageAttuale;
+    private static EStage stageAttuale=null;
 
     public StageManager(int numeroSchermo) {
         setScreen(numeroSchermo);
@@ -44,7 +43,15 @@ abstract class StageManager {
             ds.stage.setY(estage.y < 0 ? getScreen().getY() : estage.y + getScreen().getY());
             ds.stage.setWidth(estage.width < 0 ? getScreen().getWidth() : estage.width);
             ds.stage.setHeight(estage.height < 0 ? getScreen().getHeight() : estage.height);
-            ds.stage.show();
+            if (estage.width == -1 && estage.height == -1) {
+                ds.stage.setFullScreenExitHint("");
+                ds.stage.setFullScreen(true);
+            }
+
+//            if (estage.x == -1 && estage.y == -1 && estage.width == -1 && estage.height == -1) {
+//                ds.stage.setFullScreen(true);
+//            } 
+//            ds.stage.show();
             STAGES.put(estage, ds);
         }
         postInit();
@@ -56,6 +63,7 @@ abstract class StageManager {
     public static Stage getStageAttuale() {
         return STAGES.get(stageAttuale).stage;
     }
+
     public static EStage getEStageAttuale() {
         return stageAttuale;
     }
@@ -63,14 +71,21 @@ abstract class StageManager {
     static Object getController(EStage es) {
         return STAGES.get(es).controller;
     }
+
     static Stage getStage(EStage es) {
         return STAGES.get(es).stage;
     }
-    static Scene getScene(EStage es){
+
+    static Scene getScene(EStage es) {
         return STAGES.get(es).scene;
     }
+
     static void showStage(EStage es) {
-//        STAGES.get(stageAttuale).stage.hide();        
+//        STAGES.get(stageAttuale).stage.hide();
+        if(stageAttuale!=null) 
+            STAGES.get(stageAttuale).stage.hide();
+            
+        STAGES.get(es).stage.show();
         STAGES.get(es).stage.toFront();
         stageAttuale = es;
     }
@@ -91,6 +106,7 @@ abstract class StageManager {
         }
     }
 }
+
 class DataStage {
 
     Parent root;

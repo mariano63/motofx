@@ -5,9 +5,7 @@ package org.ma.motofx;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
@@ -22,7 +20,6 @@ public class VideoProcessing {
 
     private final MediaPlayer mp;
     private final FXMLVideoController fxmlVideo;
-    static SimpleIntegerProperty counterLoop = new SimpleIntegerProperty();
     Duration duration;
     static ExecutorService executor = Executors.newFixedThreadPool(10);
 
@@ -33,51 +30,36 @@ public class VideoProcessing {
         this.mp = mp;
         this.fxmlVideo = fxml;
         //crea un BIND coi LAPS
-        FXMLSetupController fxmlSetup = (FXMLSetupController) (StageManager.getController(EStage.SETUP));
-        counterLoop.set(1);
-        FXMLSetupController fxmlData = (FXMLSetupController) StageManager.getController(EStage.SETUP);
-        String formatted = "Lap %d of " + (int) fxmlData.getSliderLaps().getValue();
-        fxml.getLabelLap().textProperty().bind(
-                counterLoop.asString(formatted));
+        FXMLSetupController fxmlSetup = (FXMLSetupController) StageManager.getController(EStage.SETUP);
+        mp.setCycleCount( (int) fxmlSetup.getSliderLaps().getValue() );
+        String formatted = "Lap %d of " + (int) fxmlSetup.getSliderLaps().getValue();
+        fxml.getLabelLap().setText(String.format(formatted, mp.getCurrentCount()+1));
 
-
-        //Non mi funzia, boh...
-//        mp.cycleCountProperty().addListener(new InvalidationListener() {
-//            @Override
-//            public void invalidated(Observable observable) {
-//                FXMLDataController fxmlData = (FXMLDataController) SCENA.get(SceneManager.LeScene.SETUP).getController();
-//                fxml.getLabelLap().setText(mp.getCycleCount()+" / "
-//                        +fxmlData.getSpinnerLaps().getValue());
-//            }
-//        });
-        mp.currentTimeProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable ov) {
-                updateValues();
-            }
+        mp.currentTimeProperty().addListener((Observable ov) -> {
+            updateValues();
         });
-        mp.setOnPlaying(new Runnable() {
-            @Override
-            public void run() {
-                Utility.msgDebug("Start playing...:");
-            }
+        mp.setOnPlaying(() -> {
+            Utility.msgDebug("Start playing...:");
         });
-        mp.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                if (counterLoop.get() != (int) fxmlSetup.getSliderLaps().getValue()) {
-                    mp.seek(Duration.ZERO);
-                    mp.play();
-                    counterLoop.set(counterLoop.get()+1);
-                }
-            }
+        mp.setOnRepeat(() -> {
+            Utility.msgDebug(String.format("repeat:%d",mp.getCurrentCount()));
+            fxml.getLabelLap().setText(String.format(formatted, mp.getCurrentCount()+1));
         });
-
-        //Inizializzazioni start 
-        //Numero di laps
-        mp.cycleCountProperty().set((int) fxmlData.getSliderLaps().getValue());
-        //1st lap
-        mp.setCycleCount(1);
+        mp.setOnEndOfMedia(() -> {
+//                mp.seek(Duration.ZERO);   mp.play();  //manual repeat
+        });
+        mp.setOnError(() -> {
+            Utility.msgDebug(String.format("Error playing:%s",mp.getError().toString()));
+        });
+        mp.setOnReady(() -> {
+            Utility.msgDebug(String.format("Ready playing:%s",mp.getStatus().toString()));            
+        });
+        mp.setOnStalled(() -> {
+            Utility.msgDebug(String.format("Stalled playing:%s",mp.getStatus().toString()));            
+        });
+        mp.setOnStopped(() -> {
+            Utility.msgDebug(String.format("Stopped playing:%s",mp.getStatus().toString())); 
+        });
 
     }
 

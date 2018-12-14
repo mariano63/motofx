@@ -21,7 +21,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
 
-        stageManager = new StageManager(0) {
+        stageManager = new StageManager(1) {
             @Override
             void postInit() {
                 /**

@@ -8,6 +8,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -203,14 +205,6 @@ public class FXMLSetupController implements Initializable {
         labGridCircuitSelected.textProperty().bind(sLabGridCircuitSelected);
     }
 
-    private void vaiAScena(ActionEvent event) {
-        FXMLVideoController fxml = (FXMLVideoController) StageManager.getController(EStage.VIDEO);
-//                SCENA.get(SceneManager.LeScene.VIDEO).getController();
-        fxml.changeVideo();
-        fxml.playTheVideo();
-        StageManager.showStage(EStage.VIDEO);
-    }
-
     @FXML
     private void importCircuits(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -246,8 +240,8 @@ public class FXMLSetupController implements Initializable {
             } else {
                 obListaCircuiti.add(new Label(nameNoExt));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLSetupController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
