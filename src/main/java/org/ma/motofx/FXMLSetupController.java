@@ -114,11 +114,9 @@ public class FXMLSetupController implements Initializable {
     public Slider getSliderLaps() {
         return sliderLaps;
     }
-    
 
-    private final static ObservableList<CRank> TABRANKS = FXCollections.observableArrayList(
-//            new CRank(5, "Mario Andretti", "INTERMEDIATE", "100", "100", "100", "100", "100", 100, "Ducati 500 mk")
-    );
+    private final static ObservableList<CRank> TABRANKS = FXCollections.observableArrayList( //            new CRank(5, "Mario Andretti", "INTERMEDIATE", "100", "100", "100", "100", "100", 100, "Ducati 500 mk")
+            );
 
     /**
      * Initializes the controller class.
@@ -128,24 +126,6 @@ public class FXMLSetupController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //BINDINGS ARDUINO
-        labAcceleration.textProperty().bind(ArduinoData.acceleratorePercent.asString("%3d%%"));
-        labThrClose.textProperty().bind(ArduinoData.acceleratoreMin.asString("%6d"));
-        labThrOpen.textProperty().bind(ArduinoData.acceleratoreMax.asString("%6d"));
-        labFrontBrake.textProperty().bind(ArduinoData.frenoAnteriorePercent.asString("%3d%%"));
-        labFrontBrakeAllClose.textProperty().bind(ArduinoData.frenoAnterioreMin.asString("%6d"));
-        labFrontBrakeAllOpen.textProperty().bind(ArduinoData.frenoAnterioreMax.asString("%6d"));
-        labRearBrake.textProperty().bind(ArduinoData.frenoPosteriorePercent.asString("%3d%%"));
-        labRearBrakeAllClose.textProperty().bind(ArduinoData.frenoPosterioreMin.asString("%6d"));
-        labRearBrakeAllOpen.textProperty().bind(ArduinoData.frenoPosterioreMax.asString("%6d"));
-        labLean.textProperty().bind(ArduinoData.angolo.asString("%6d"));
-        //BINDINGS OTHERS
-        //Non posso metterlo, perché se non c'è selezione mi da null ed esce malamente...
-        //Allora uso SimpleStringProperty
-//        labGridCircuitSelected.textProperty().bind(
-//                listCircuit.getSelectionModel().getSelectedItem().textProperty());
-        //eccallà
-        labGridCircuitSelected.textProperty().bind(sLabGridCircuitSelected);
 
         /**
          * tableview RANKINGS
@@ -168,7 +148,6 @@ public class FXMLSetupController implements Initializable {
 //                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
 //
 //        spinnerLaps.setValueFactory(valueFactory);
-
         /**
          * Con questa inizializzazione la Label visualizza e ridimensiona la
          * ImageView interna a livello scene-builder
@@ -203,9 +182,29 @@ public class FXMLSetupController implements Initializable {
 //        myContainer.setBackground(new Background(myBI));
     }
 
+    public void postInitialize() {
+        //BINDINGS ARDUINO
+        labAcceleration.textProperty().bind(ArduinoData.acceleratorePercent.asString("%3d%%"));
+        labThrClose.textProperty().bind(ArduinoData.acceleratoreMin.asString("%6d"));
+        labThrOpen.textProperty().bind(ArduinoData.acceleratoreMax.asString("%6d"));
+        labFrontBrake.textProperty().bind(ArduinoData.frenoAnteriorePercent.asString("%3d%%"));
+        labFrontBrakeAllClose.textProperty().bind(ArduinoData.frenoAnterioreMin.asString("%6d"));
+        labFrontBrakeAllOpen.textProperty().bind(ArduinoData.frenoAnterioreMax.asString("%6d"));
+        labRearBrake.textProperty().bind(ArduinoData.frenoPosteriorePercent.asString("%3d%%"));
+        labRearBrakeAllClose.textProperty().bind(ArduinoData.frenoPosterioreMin.asString("%6d"));
+        labRearBrakeAllOpen.textProperty().bind(ArduinoData.frenoPosterioreMax.asString("%6d"));
+        labLean.textProperty().bind(ArduinoData.angolo.asString("%6d"));
+        //BINDINGS OTHERS
+        //Non posso metterlo, perché se non c'è selezione mi da null ed esce malamente...
+        //Allora uso SimpleStringProperty
+//        labGridCircuitSelected.textProperty().bind(
+//                listCircuit.getSelectionModel().getSelectedItem().textProperty());
+        //eccallà
+        labGridCircuitSelected.textProperty().bind(sLabGridCircuitSelected);
+    }
+
     private void vaiAScena(ActionEvent event) {
-        FXMLVideoController fxml = (FXMLVideoController) 
-                StageManager.getController(EStage.VIDEO);
+        FXMLVideoController fxml = (FXMLVideoController) StageManager.getController(EStage.VIDEO);
 //                SCENA.get(SceneManager.LeScene.VIDEO).getController();
         fxml.changeVideo();
         fxml.playTheVideo();
@@ -260,20 +259,20 @@ public class FXMLSetupController implements Initializable {
             Utility.msgDebug(lbl.getText());
             Prop.setMediaUrl(Paths.get(
                     Prop.CIRCUITI.toString(),
-                     lbl.getText().replace(Prop.MARK_TRACK_EXT, "") + ".mp4"));
+                    lbl.getText().replace(Prop.MARK_TRACK_EXT, "") + ".mp4"));
             try {
                 //            FXMLVideoController fx = MainApp.getMyApp().getFXMLController();
 //            fx.changeVideo(Paths.get(
 //                    Prop.CIRCUITI.toString()
 //                    ,lbl.getText().replace(Prop.MARK_TRACK_EXT,"")+".mp4"));
                 Utility.importRankFromCSV(TABRANKS,
-                        Prop.RANKS.toString()+
-                        System.getProperty("file.separator") +
-                        lbl.getText().replace(Prop.MARK_TRACK_EXT, "")
+                        Prop.RANKS.toString()
+                        + System.getProperty("file.separator")
+                        + lbl.getText().replace(Prop.MARK_TRACK_EXT, "")
                         + Prop.RANK_EXT);
             } catch (Exception ex) {
 //                Logger.getLogger(FXMLDataController.class.getName()).log(Level.SEVERE, null, ex);
-                Utility.msgDebug(lbl.getText()+":doesn't have rank file associated.");
+                Utility.msgDebug(lbl.getText() + ":doesn't have rank file associated.");
             }
         }
     }
@@ -295,8 +294,7 @@ public class FXMLSetupController implements Initializable {
             alert.showAndWait();
             return;
         }
-        FXMLVideoController fxml = (FXMLVideoController) 
-                StageManager.getController(EStage.VIDEO);
+        FXMLVideoController fxml = (FXMLVideoController) StageManager.getController(EStage.VIDEO);
         fxml.changeVideo();
         fxml.playTheVideo();
         StageManager.showStage(EStage.VIDEO);

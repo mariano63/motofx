@@ -116,10 +116,10 @@ public class VideoProcessing {
         public Object doInBackground(Object... params) {
 //            Utility.msgDebug("isFxApplicationThread dovrebbe essere falso:" + isFxApplicationThread());
             Duration currentTime = mp.getCurrentTime();
-            int minuti = (int) currentTime.toMinutes() % 60;
-            int secondi = (int) currentTime.toSeconds() % 60;
-            int msecs = (int) (currentTime.toMillis()) % 1000;
-            tempo = String.format("%02d:%02d%c%1d", minuti, secondi, '.', msecs / 100);
+            double minuti = currentTime.toMinutes() % 60;
+            double secondi =  currentTime.toSeconds() % 60;
+            double msecs = (currentTime.toMillis()) % 1000;
+            tempo = String.format("%02.0f:%02.0f%c%1.0f", minuti, secondi, '.', msecs/100);
             return tempo;
         }
 

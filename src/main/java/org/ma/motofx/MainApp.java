@@ -1,20 +1,14 @@
 package org.ma.motofx;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.media.MediaPlayer;
 import org.ma.motofx.support.Rs232;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.ma.motofx.data.Prop;
 import org.ma.motofx.support.Utility;
 
-import javax.rmi.CORBA.Util;
 
 public class MainApp extends Application {
 
@@ -33,49 +27,18 @@ public class MainApp extends Application {
                 /**
                  * Platform.isFxApplicationThread() is true
                  */
-                StageManager.getStage(EStage.VIDEO).focusedProperty().addListener(new ChangeListener<Boolean>()
-                {
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown)
-                    {
-//                Utility.msgDebug(" VIDEO focus onHidden:"+onHidden+", onShown"+onShown);
-                        FXMLVideoController fxml = (FXMLVideoController)StageManager.getController(EStage.VIDEO);
-
-                        if (fxml.getMediaPlayer() != null) {
-                            if (onShown && fxml.getMediaPlayer().getStatus()!= MediaPlayer.Status.PLAYING) {
-                                fxml.playTheVideo();
-                            }
-                            else {
-                                if(fxml.getMediaPlayer().getStatus()== MediaPlayer.Status.PLAYING)
-                                    fxml.getMediaPlayer().pause();
-                            }
-                        }
-//                        Platform.runLater(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (fxml.getMediaPlayer() != null) {
-//                                    if (onShown) fxml.playTheVideo();
-//                                    else fxml.getMediaPlayer().pause();
-//                                }
-//                            }
-//                        });
-                    }
-                });
+                ((FXMLVideoController)StageManager.getController(EStage.VIDEO)).postInitialize();
+                ((FXMLSetupController)StageManager.getController(EStage.SETUP)).postInitialize();
             }
         };
 
         Utility.msgDebug(RS232.open()? "RS232 Opened!":"RS232 Error:Not opened!");
         StageManager.showStage(EStage.SETUP);
         
-        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST,
-                new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                //***Attento! un throw od un consume event, e si rischia di non uscire più...
-                Utility.msgDebug("WindowEvent.WINDOW_CLOSE_REQUEST-->> ...exiting");
-            }
-        }
-        );
+        stage.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (Event event) -> {
+            //***Attento! un throw od un consume event, e si rischia di non uscire più...
+            Utility.msgDebug("WindowEvent.WINDOW_CLOSE_REQUEST-->> ...exiting");
+        });
     }
 
 

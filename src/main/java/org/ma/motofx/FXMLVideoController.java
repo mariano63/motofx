@@ -2,8 +2,6 @@ package org.ma.motofx;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +27,9 @@ import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 import static java.lang.Thread.*;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.media.MediaErrorEvent;
 
 /**
  * FXML Controller class
@@ -89,17 +90,34 @@ public class FXMLVideoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Utility.msgDebug("Initialize video controller!!!");
-        FXMLSetupController fxml = (FXMLSetupController)
-                StageManager.getController(EStage.SETUP);
+
+        Scene scenaSetup = StageManager.getScene(EStage.SETUP);
+//                SCENA.get(SceneManager.LeScene.SETUP).getScene();
+        ScaleThumbs scaleThumbs
+                = new ScaleThumbs(scenaSetup, groupThumbs);
+
+    }
+
+    public void postInitialize() {
+        //Binds
+        FXMLSetupController fxml = (FXMLSetupController) StageManager.getController(EStage.SETUP);
         labelBike.textProperty().bind(fxml.getTextfieldBike().textProperty());
         labelPilota.textProperty().bind(fxml.getTextfieldPilota().textProperty());
         progressBarFrontBreak.progressProperty().bind(ArduinoData.frenoAnteriorePercent.divide(100d));
         progressBarRearBreak.progressProperty().bind(ArduinoData.frenoPosteriorePercent.divide(100d));
 
-        Scene scenaSetup = StageManager.getScene(EStage.SETUP);
-//                SCENA.get(SceneManager.LeScene.SETUP).getScene();
-        ScaleThumbs scaleThumbs =
-                new ScaleThumbs(scenaSetup, groupThumbs);
+        //Properties
+        StageManager.getStage(EStage.VIDEO).focusedProperty().addListener((ObservableValue<? extends Boolean> ov, Boolean onHidden, Boolean onShown) -> {
+            if (getMediaPlayer() != null) {
+                if (onShown && getMediaPlayer().getStatus() != MediaPlayer.Status.PLAYING) {
+                    playTheVideo();
+                } else {
+                    if (getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
+                        getMediaPlayer().pause();
+                    }
+                }
+            }
+        });
 
     }
 
@@ -108,13 +126,15 @@ public class FXMLVideoController implements Initializable {
             if (isPreCount) {
                 thd1 = new DoPreCount(this);
                 thd1.execute();
-                isPreCount=false;
+                isPreCount = false;
             }
             //mediaPlayer.play();
             mediaPlayer.setCycleCount(1);
         }
     }
+
     class DoPreCount extends AsyncTask {
+
         private final FXMLVideoController controller;
 
         DoPreCount(FXMLVideoController controller) {
@@ -153,11 +173,12 @@ public class FXMLVideoController implements Initializable {
 
         @Override
         protected void progressCallback(Object... params) {
-            textPreCount.setText(params[0]+"");
+            textPreCount.setText(params[0] + "");
             if (params[0] instanceof Integer) {
-                if ((Integer)params[0] == -1) {
-                    if(StageManager.getEStageAttuale().equals(EStage.VIDEO))
+                if ((Integer) params[0] == -1) {
+                    if (StageManager.getEStageAttuale().equals(EStage.VIDEO)) {
                         mediaPlayer.play();
+                    }
                 }
             }
         }
@@ -186,13 +207,35 @@ public class FXMLVideoController implements Initializable {
             mediaPlayer.dispose();
         }
         Media ilVideo = new Media(videoPath.toUri().toString());
+        ilVideo.setOnError(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Media error");
+                ilVideo.getError().printStackTrace(System.out);
+            }
+        });
         mediaPlayer = new MediaPlayer(ilVideo);
+        mediaPlayer.setOnError(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("player error");
+                mediaPlayer.getError().printStackTrace(System.out);
+            }
+        });
         mediaView.setMediaPlayer(mediaPlayer);
+        mediaView.setOnError(new EventHandler<MediaErrorEvent>() {
+            @Override
+            public void handle(MediaErrorEvent arg0) {
+                // TODO Auto-generated method stub
+                System.out.println("view error");
+                arg0.getMediaError().printStackTrace(System.out);;
+            }
+        });
         setMediaViewFullSize(mediaView);
         PaneVideo.getChildren().setAll(mediaView);
-        VideoProcessing videoProcessing = new VideoProcessing(mediaPlayer
-                , mediaView
-                , (FXMLVideoController) StageManager.getController(EStage.VIDEO)
+        VideoProcessing videoProcessing = new VideoProcessing(mediaPlayer,
+                mediaView,
+                (FXMLVideoController) StageManager.getController(EStage.VIDEO)
         );
     }
 
