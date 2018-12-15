@@ -166,7 +166,8 @@
     -fx-text-fill: white;
 }
 .lwd .list-cell:filled:hover {
-    -fx-border-color: yellowgreen;
+    -fx-background-image: url("../pix/parallelog-grey.png");
+    /*-fx-border-color: yellowgreen;*/
 }
 .lwd .list-cell:filled:selected  {
     -fx-background-image: url("../pix/parallelog-red.png");

@@ -29,8 +29,6 @@ import java.util.ResourceBundle;
 import static java.lang.Thread.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.scene.media.MediaErrorEvent;
 import javafx.stage.WindowEvent;
 
@@ -127,8 +125,24 @@ public class FXMLVideoController implements Initializable {
         StageManager.getStage(EStage.VIDEO).setOnShown((WindowEvent event) -> {
 //            getMediaPlayer().play();
         });
+        
+        mediaView.setOnError((MediaErrorEvent arg0) -> {
+            System.out.println("view error");
+            arg0.getMediaError().printStackTrace(System.out);
+        });
+        setMediaViewFullSize(mediaView);
+        PaneVideo.getChildren().setAll(mediaView);
+        
     }
 
+    private void setMediaViewFullSize(MediaView mv) {
+        final DoubleProperty width = mv.fitWidthProperty();
+        final DoubleProperty height = mv.fitHeightProperty();
+        width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
+        height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
+        mv.setPreserveRatio(false);
+    }
+    
     public void playTheVideo() {
         if (mediaPlayer != null) {
             if (isPreCount) {
@@ -191,13 +205,6 @@ public class FXMLVideoController implements Initializable {
         }
     }
 
-    private void setMediaViewFullSize(MediaView mv) {
-        final DoubleProperty width = mv.fitWidthProperty();
-        final DoubleProperty height = mv.fitHeightProperty();
-        width.bind(Bindings.selectDouble(mv.sceneProperty(), "width"));
-        height.bind(Bindings.selectDouble(mv.sceneProperty(), "height"));
-        mv.setPreserveRatio(false);
-    }
 
     /**
      * Il filmato precedente partirà daccapo, dato il dispose.
@@ -223,13 +230,8 @@ public class FXMLVideoController implements Initializable {
             System.out.println("player error");
             mediaPlayer.getError().printStackTrace(System.out);
         });
+        
         mediaView.setMediaPlayer(mediaPlayer);
-        mediaView.setOnError((MediaErrorEvent arg0) -> {
-            System.out.println("view error");
-            arg0.getMediaError().printStackTrace(System.out);
-        });
-        setMediaViewFullSize(mediaView);
-        PaneVideo.getChildren().setAll(mediaView);
         VideoProcessing videoProcessing = new VideoProcessing(mediaPlayer,
                 mediaView,
                 (FXMLVideoController) StageManager.getController(EStage.VIDEO)
@@ -239,6 +241,7 @@ public class FXMLVideoController implements Initializable {
     @FXML
     private void ButBackFromVideoOnAction(ActionEvent event) {
         thd1.getBackGroundThread().interrupt();
+        mediaPlayer.pause();
         StageManager.showStage(EStage.SETUP);
     }
 

@@ -47,6 +47,14 @@ public class VideoProcessing {
         });
         mp.setOnEndOfMedia(() -> {
 //                mp.seek(Duration.ZERO);   mp.play();  //manual repeat
+            Utility.msgDebug(String.format("\"End of media\":%d",mp.getCurrentCount()));
+            if((int) fxmlSetup.getSliderLaps().getValue() - mp.getCurrentCount() == 0){
+                StageManager.showStage(EStage.POSTVIDEO);
+            }
+        });
+        mp.setOnStopped(() -> {
+            Utility.msgDebug("Stopped");
+            StageManager.showStage(EStage.SETUP);
         });
         mp.setOnError(() -> {
             Utility.msgDebug(String.format("Error playing:%s",mp.getError().toString()));
