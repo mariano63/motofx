@@ -123,9 +123,9 @@ public class FXMLAdminController implements Initializable {
     }
     @FXML
     private void onButtonClose(ActionEvent event) {
-//        buttonClose.getScene().getWindow().hide();
+        buttonClose.getScene().getWindow().hide();
 //        ((Stage) buttonClose.getScene().getWindow()).close();
-        StageManager.showStage(EStage.SETUP);
+//        StageManager.showStage(EStage.SETUP);
 //        SCENA.get(SceneManager.LeScene.SETUP).esponiLaScena();
     }
     

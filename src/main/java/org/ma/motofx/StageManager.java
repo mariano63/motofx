@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -37,6 +38,10 @@ abstract class StageManager {
             ds.scene = new Scene(ds.root);
             ds.scene.getStylesheets().add(estage.css);
             ds.stage.setTitle(estage.title);
+            if(estage.owner!=null){
+                ds.stage.initOwner(STAGES.get(estage.owner).stage);
+                ds.stage.initModality(Modality.APPLICATION_MODAL);
+            }
             ds.stage.initStyle(estage.decorated);
             ds.stage.setScene(ds.scene);
             ds.stage.setX(estage.x < 0 ? getScreen().getX() : estage.x + getScreen().getX());
@@ -47,11 +52,6 @@ abstract class StageManager {
                 ds.stage.setFullScreenExitHint("");
                 ds.stage.setFullScreen(true);
             }
-
-//            if (estage.x == -1 && estage.y == -1 && estage.width == -1 && estage.height == -1) {
-//                ds.stage.setFullScreen(true);
-//            } 
-//            ds.stage.show();
             STAGES.put(estage, ds);
         }
         postInit();
@@ -82,11 +82,11 @@ abstract class StageManager {
 
     static void showStage(EStage es) {
 //        STAGES.get(stageAttuale).stage.hide();
-        if(stageAttuale!=null) 
-            STAGES.get(stageAttuale).stage.hide();
+//        if(stageAttuale!=null) 
+//            STAGES.get(stageAttuale).stage.hide();
             
-        STAGES.get(es).stage.show();
         STAGES.get(es).stage.toFront();
+        STAGES.get(es).stage.show();
         stageAttuale = es;
     }
 
