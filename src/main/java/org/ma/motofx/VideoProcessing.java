@@ -49,12 +49,13 @@ public class VideoProcessing {
 //                mp.seek(Duration.ZERO);   mp.play();  //manual repeat
             Utility.msgDebug(String.format("\"End of media\":%d",mp.getCurrentCount()));
             if((int) fxmlSetup.getSliderLaps().getValue() - mp.getCurrentCount() == 0){
-                StageManager.showStage(EStage.POSTVIDEO);
+                mp.stop();
+                StageManager.showStageButHide(EStage.POSTVIDEO, mediaView.getScene().getWindow());
             }
         });
         mp.setOnStopped(() -> {
             Utility.msgDebug("Stopped");
-            StageManager.showStage(EStage.SETUP);
+            StageManager.showStageButHide(EStage.SETUP, mediaView.getScene().getWindow());
         });
         mp.setOnError(() -> {
             Utility.msgDebug(String.format("Error playing:%s",mp.getError().toString()));
@@ -81,7 +82,7 @@ public class VideoProcessing {
         elapsedTime thd1 = new elapsedTime(fxmlVideo);
         thd1.execute();
 
-//        {   //tst breaks progressing bar. Remove when done
+//        {   //tst breaks progressing bar. Remarks when done
 //            int fa = ArduinoData.frenoAnteriorePercent.get();
 //            if(fa>100) fa=0;
 //            ArduinoData.frenoAnteriorePercent.set(++fa);

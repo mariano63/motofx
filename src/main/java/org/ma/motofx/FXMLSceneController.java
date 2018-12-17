@@ -18,7 +18,7 @@ public class FXMLSceneController implements Initializable {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me! I change Scene");
-        StageManager.showStage(EStage.VIDEO);
+        StageManager.showStageButHide(EStage.VIDEO, button.getScene().getWindow());
 //        SCENA.get(SceneManager.LeScene.VIDEO).esponiLaScena();
     }
     

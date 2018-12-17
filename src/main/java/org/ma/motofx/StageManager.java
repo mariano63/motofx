@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -38,12 +37,8 @@ abstract class StageManager {
             ds.scene = new Scene(ds.root);
             ds.scene.getStylesheets().add(estage.css);
             ds.stage.setTitle(estage.title);
-            if(estage.owner!=null){
-                ds.stage.initOwner(STAGES.get(estage.owner).stage);
-                ds.stage.initModality(Modality.APPLICATION_MODAL);
-            }
             ds.stage.initStyle(estage.decorated);
-            ds.stage.setScene(ds.scene);
+            ds.stage.initModality(estage.modality);
             ds.stage.setX(estage.x < 0 ? getScreen().getX() : estage.x + getScreen().getX());
             ds.stage.setY(estage.y < 0 ? getScreen().getY() : estage.y + getScreen().getY());
             ds.stage.setWidth(estage.width < 0 ? getScreen().getWidth() : estage.width);
@@ -52,6 +47,7 @@ abstract class StageManager {
                 ds.stage.setFullScreenExitHint("");
                 ds.stage.setFullScreen(true);
             }
+            ds.stage.setScene(ds.scene);
             STAGES.put(estage, ds);
         }
         postInit();
@@ -80,6 +76,12 @@ abstract class StageManager {
         return STAGES.get(es).scene;
     }
 
+    
+    static void showStageButHide(EStage es, javafx.stage.Window stageToHide) {
+        stageToHide.hide();
+        showStage(es);
+    }
+    
     static void showStage(EStage es) {
 //        STAGES.get(stageAttuale).stage.hide();
 //        if(stageAttuale!=null) 

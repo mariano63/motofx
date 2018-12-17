@@ -120,7 +120,8 @@ public class FXMLVideoController implements Initializable {
 //            }
 //        });
         StageManager.getStage(EStage.VIDEO).setOnHidden((WindowEvent event) -> {
-            getMediaPlayer().pause();
+//            if (getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING)
+//                getMediaPlayer().pause();
         });
         StageManager.getStage(EStage.VIDEO).setOnShown((WindowEvent event) -> {
 //            getMediaPlayer().play();
@@ -241,8 +242,8 @@ public class FXMLVideoController implements Initializable {
     @FXML
     private void ButBackFromVideoOnAction(ActionEvent event) {
         thd1.getBackGroundThread().interrupt();
-        mediaPlayer.pause();
-        StageManager.showStage(EStage.SETUP);
+        mediaPlayer.stop();
+        StageManager.showStageButHide(EStage.SETUP, buttonExit.getScene().getWindow());
     }
 
 //    private void playaa(ActionEvent event) {

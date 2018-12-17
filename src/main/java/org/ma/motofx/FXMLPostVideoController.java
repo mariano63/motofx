@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.ma.motofx;
 
 import java.net.URL;
@@ -32,7 +28,7 @@ public class FXMLPostVideoController implements Initializable {
 
     @FXML
     private void OnActionButExit(ActionEvent event) {
-        StageManager.showStage(EStage.SETUP);
+        StageManager.showStageButHide(EStage.SETUP, butExit.getScene().getWindow());
     }
     
 }
