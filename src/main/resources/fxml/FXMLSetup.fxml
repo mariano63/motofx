@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -22,7 +31,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="1370.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ma.motofx.FXMLSetupController">
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="1370.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.ma.motofx.FXMLSetupController">
     <stylesheets>
         <URL value="@/styles/fxmlsetup.css" />
     </stylesheets>
@@ -96,7 +105,7 @@
                                 <String fx:value="f28" />
                             </styleClass>
                         </Label>
-                        <Button mnemonicParsing="false" onAction="#importCircuits" prefHeight="46.0" prefWidth="185.0" stylesheets="@../styles/fxmlsetup.css" text="Import Circuit">
+                        <Button focusTraversable="false" mnemonicParsing="false" onAction="#importCircuits" prefHeight="46.0" prefWidth="185.0" stylesheets="@../styles/fxmlsetup.css" text="Import Circuit">
                             <styleClass>
                                 <String fx:value="buttondark" />
                                 <String fx:value="f28" />
@@ -162,19 +171,16 @@
                         <Insets left="30.0" />
                     </GridPane.margin>
                 </ListView>
-                <Button mnemonicParsing="false" onAction="#startTheRace" prefHeight="38.0" prefWidth="238.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="BOTTOM">
+                <Button mnemonicParsing="false" onAction="#startTheRace" prefHeight="32.0" prefWidth="175.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="BOTTOM">
                     <styleClass>
                         <String fx:value="buttonStartExit" />
                         <String fx:value="start" />
                     </styleClass>
-                    <font>
-                        <Font size="36.0" />
-                    </font>
                     <effect>
                         <Reflection />
                     </effect>
                 </Button>
-                <Button mnemonicParsing="false" onAction="#onButtonExit" prefHeight="59.0" prefWidth="238.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="BOTTOM">
+                <Button mnemonicParsing="false" onAction="#onButtonExit" prefHeight="32.0" prefWidth="175.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2" GridPane.valignment="BOTTOM">
                     <styleClass>
                         <String fx:value="buttonStartExit" />
                         <String fx:value="exit" />
@@ -255,7 +261,7 @@
                         <Insets right="5.0" />
                     </padding>
                 </Label>
-                <Label fx:id="labLean" prefHeight="25.0" prefWidth="70.0" styleClass="labeldigit" stylesheets="@../styles/fxmlsetup.css" text="888888" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                <Label fx:id="labLean" focusTraversable="false" prefHeight="25.0" prefWidth="70.0" styleClass="labeldigit" stylesheets="@../styles/fxmlsetup.css" text="888888" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                     <padding>
                         <Insets right="5.0" />
                     </padding>
@@ -275,7 +281,7 @@
                         <Insets right="5.0" />
                     </GridPane.margin>
                 </Label>
-                <Label fx:id="labRearBrake" styleClass="labeldigit" stylesheets="@../styles/fxmlsetup.css" text="888888" GridPane.columnIndex="8" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                <Label fx:id="labRearBrake" focusTraversable="false" styleClass="labeldigit" stylesheets="@../styles/fxmlsetup.css" text="888888" GridPane.columnIndex="8" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                     <GridPane.margin>
                         <Insets right="5.0" />
                     </GridPane.margin>
@@ -353,7 +359,7 @@
                 <Button mnemonicParsing="false" onAction="#buttResetThrottle" text="Reset" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" />
                 <Button mnemonicParsing="false" onAction="#buttResetFrontBrake" text="Reset" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" />
                 <Button mnemonicParsing="false" onAction="#buttResetRearBrake" text="Reset" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="2" />
-                <TableView fx:id="tableRanking" focusTraversable="false" prefHeight="160.0" prefWidth="221.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="5">
+                <TableView fx:id="tableRanking" prefHeight="160.0" prefWidth="221.0" stylesheets="@../styles/fxmlsetup.css" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="5">
                     <columns>
                         <TableColumn fx:id="tabColPosition" prefWidth="51.0" text="Rank" />
                         <TableColumn fx:id="tabColName" prefWidth="180.0" text="Name" />
@@ -370,13 +376,13 @@
                         <Insets left="15.0" />
                     </GridPane.margin>
                 </TableView>
-                <Label fx:id="labGridCircuitSelected" alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="462.0" stylesheets="@../styles/fxmlsetup.css" text="&lt;Circuit selected&gt;" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                <Label fx:id="labGridCircuitSelected" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="33.0" prefWidth="462.0" stylesheets="@../styles/fxmlsetup.css" text="&lt;Circuit selected&gt;" GridPane.columnSpan="2" GridPane.rowIndex="1">
                     <styleClass>
                         <String fx:value="labeldark" />
                         <String fx:value="f24" />
                     </styleClass>
                 </Label>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="43.0" prefWidth="326.0" stylesheets="@../styles/fxmlsetup.css" text="RANKINGS" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                <Label alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" prefHeight="43.0" prefWidth="326.0" stylesheets="@../styles/fxmlsetup.css" text="RANKINGS" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                     <styleClass>
                         <String fx:value="labeldark" />
                         <String fx:value="f28" />
